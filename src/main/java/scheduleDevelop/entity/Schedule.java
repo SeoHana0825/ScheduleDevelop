@@ -19,9 +19,15 @@ public class Schedule extends BaseEntity {
     private String text;
     private String password;
 
-    public Schedule(String username, String title, String text) {
+    public Schedule(String username, String title, String text, String password) {
         this.username = username;
         this.title = title;
         this.text = text;
+        this.password = password;
+    }
+
+    public void updateTitleAndUsername(String username, String title) {
+        this.username = username;
+        this.title = title;
     }
 }

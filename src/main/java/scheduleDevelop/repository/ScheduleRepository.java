@@ -5,9 +5,9 @@ import scheduleDevelop.entity.Schedule;
 
 import java.util.List;
 
-public interface Repository extends JpaRepository<Schedule, Long> {
-    List<Schedule> findAllByOrderByUsernameDesc();
+public interface ScheduleRepository extends JpaRepository<Schedule, Long> {
+    List<Schedule> findAllByUsernameOrderByUpdatedDateDesc(String username);
     List<Schedule> findAllByOrderByUpdatedDateDesc();
-    List<Schedule> findAllByOrderByTitleDesc();
+
 
 }
