@@ -38,7 +38,7 @@ public class UserController {
     }
 
     // 유저 수정
-    @GetMapping("/users/{userId}")
+    @PutMapping("/users/{userId}")
     public ResponseEntity<UserUpdateResponse> update(
             @PathVariable Long userId,
             @RequestBody UserUpdateRequest request
