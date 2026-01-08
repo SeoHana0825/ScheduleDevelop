@@ -16,6 +16,7 @@ import java.util.List;
 public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
+    private final UserRepository userRepository;
 
     // 1. 일정 생성
     @Transactional
