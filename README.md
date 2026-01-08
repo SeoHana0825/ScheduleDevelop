@@ -7,13 +7,13 @@
 - API 명세서
     - 일정 API
 
-     | 기능    | Method | URL | request                                                                      | response                                                                                                                                                                     |
-      |:------|:-------|:----|:-----------------------------------------------------------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-      | 일정 등록 | POST   | /schedules    | {<p>"username" : "김씨",<p>"title" : "안녕",<p>"text" : "안녕하세요 "<p>}       | { <p> "id" : 1, <p> "username" : "김씨", <p> "title" : "안녕", <p> "text" : "안녕하세요 "<p> "createDate" : "2026-01-08 16:34" <p> "updateDate" : "2026-01-08 16:35" <p>}             |
-      | 일정 조회 | GET    | /schedules    |                                                                              | { <p> "id" : 1, <p> "username" : "김씨", <p> "title" : "안녕", <p> "text" : "안녕하세요 "<p> "createDate" : "2026-01-08 16:34" <p> "updateDate" : "2026-01-08 16:35" <p>}             |
-      | 일정 단건 | GET    | /schedules/{scheduleId}    |                                                                 | { <p> "id" : 1, <p> "username" : "김씨", <p> "title" : "안녕", <p> "text" : "안녕하세요 "<p> "createDate" : "2026-01-08 16:34" <p> "updateDate" : "2026-01-08 16:35" <p>}             |
-      | 일정 수정 | PUT    | /schedules/{scheduleId}    | {<p>"username" : "서씨",<p>"title" : "새해 복 많이 받으세요!!",<p>"text" : "안녕하세요 "<p>} | { <p> "id" : 1, <p> "username" : "서씨", <p> "title" : "새해 복 많이 받으세요!!", <p> "text" : "안녕하세요 "<p> "createDate" : "2026-01-08 16:34" <p> "updateDate" : "2026-01-08 16:50" <p>} |
-      | 일정 삭제 | DELETE | /schedules/{scheduleId}    |                                                                 | 200 OK                                                                                                                                                                   |
+     | 기능    | Method | URL | request   | response     |
+     |:------|:-------|:----|:------------|:-------------|
+     | 일정 등록 | POST | /schedules |{<p>"username" : "김씨",<p>"title" : "안녕",<p>"text" : "안녕하세요 "<p>}|{ <p> "id" : 1, <p> "username" : "김씨", <p> "title" : "안녕", <p> "text" : "안녕하세요 "<p> "createDate" : "2026-01-08 16:34" <p> "updateDate" : "2026-01-08 16:35" <p>}|
+    |일정 조회| GET | /schedules |{ <p> "id" : 1, <p> "username" : "김씨", <p> "title" : "안녕", <p> "text" : "안녕하세요 "<p> "createDate" : "2026-01-08 16:34" <p> "updateDate" : "2026-01-08 16:35" <p>}|{ <p> "id" : 1, <p> "username" : "김씨", <p> "title" : "안녕", <p> "text" : "안녕하세요 "<p> "createDate" : "2026-01-08 16:34" <p> "updateDate" : "2026-01-08 16:35" <p>}|
+    | 일정 단건 | GET | /schedules/{scheduleId} |                                                                 | { <p> "id" : 1, <p> "username" : "김씨", <p> "title" : "안녕", <p> "text" : "안녕하세요 "<p> "createDate" : "2026-01-08 16:34" <p> "updateDate" : "2026-01-08 16:35" <p>} |
+    | 일정 수정 | PUT | /schedules/{scheduleId} | {<p>"username" : "서씨",<p>"title" : "새해 복 많이 받으세요!!",<p>"text" : "안녕하세요 "<p>} | { <p> "id" : 1, <p> "username" : "서씨", <p> "title" : "새해 복 많이 받으세요!!", <p> "text" : "안녕하세요 "<p> "createDate" : "2026-01-08 16:34" <p> "updateDate" : "2026-01-08 16:50" <p>} |
+     | 일정 삭제 | DELETE | /schedules/{scheduleId}    |                                                                 | 200 OK |
  
     - 유저 API
   
