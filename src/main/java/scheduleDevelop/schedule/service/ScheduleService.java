@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import scheduleDevelop.schedule.dto.*;
 import scheduleDevelop.schedule.entity.Schedule;
 import scheduleDevelop.schedule.repository.ScheduleRepository;
+import scheduleDevelop.user.entity.User;
 import scheduleDevelop.user.repository.UserRepository;
 
 import java.util.ArrayList;
@@ -21,8 +22,13 @@ public class ScheduleService {
     // 1. 일정 생성
     @Transactional
     public ScheduleCreateResponse save(ScheduleCreateRequest request) {
+        // request에 담긴 userId로 User 찾기, ScheduleCreateRequest 에 UserId 변수 추가
+        User user = userRepository.findById(request.getUserId()).orElseThrow(
+                () -> new IllegalStateException("존재하지 않은 유저입니다.")
+        );
+
         Schedule schedule = new Schedule(
-                request.getUsername(),
+                user,
                 request.getTitle(),
                 request.getText()
         );
@@ -30,7 +36,7 @@ public class ScheduleService {
         Schedule savedSchedule = scheduleRepository.save(schedule);
         return new ScheduleCreateResponse(
                 savedSchedule.getId(),
-                savedSchedule.getUsername(),
+                user.getName(),
                 savedSchedule.getTitle(),
                 savedSchedule.getText(),
                 savedSchedule.getCreatedDate(),
@@ -83,14 +89,14 @@ public class ScheduleService {
         );
 
         schedule.update(
-                request.getUsername(),
+                //request.getUsername(),
                 request.getTitle(),
                 request.getText()
         );
 
         return new ScheduleUpdateResponse(
                 schedule.getId(),
-                schedule.getUsername(),
+                schedule.getUser().getName(),
                 schedule.getTitle(),
                 schedule.getText(),
                 schedule.getCreatedDate(),
