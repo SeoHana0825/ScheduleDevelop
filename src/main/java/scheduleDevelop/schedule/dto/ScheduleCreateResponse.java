@@ -1,4 +1,4 @@
-package scheduleDevelop.dto;
+package scheduleDevelop.schedule.dto;
 
 import lombok.Getter;
 

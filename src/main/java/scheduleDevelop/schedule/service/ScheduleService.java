@@ -1,14 +1,13 @@
-package scheduleDevelop.service;
+package scheduleDevelop.schedule.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ObjectUtils;
-import scheduleDevelop.dto.*;
-import scheduleDevelop.entity.Schedule;
-import scheduleDevelop.repository.ScheduleRepository;
+import scheduleDevelop.schedule.dto.*;
+import scheduleDevelop.schedule.entity.Schedule;
+import scheduleDevelop.schedule.repository.ScheduleRepository;
+import scheduleDevelop.user.repository.UserRepository;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,8 +23,7 @@ public class ScheduleService {
         Schedule schedule = new Schedule(
                 request.getUsername(),
                 request.getTitle(),
-                request.getText(),
-                request.getPassword()
+                request.getText()
         );
 
         Schedule savedSchedule = scheduleRepository.save(schedule);
@@ -41,18 +39,8 @@ public class ScheduleService {
 
     // 전체 일정 조회
     @Transactional(readOnly = true)
-    public List<ScheduleGetResponse> findAll(String username) {
-        // username에 따라 정렬된 schedule 목록 먼저 가져오기 (내림차순 findAllByOrderByUpdatedDate)
-        // username가 있을 수도 있고 없을 수도 있다!!
-        List<Schedule> schedules;
-
-        if (username == null) {
-            schedules = scheduleRepository.findAllByOrderByUpdatedDateDesc();
-        } else {
-            // username 가 있는 경우
-            schedules = scheduleRepository.findAllByUsernameOrderByUpdatedDateDesc(username);
-        }
-
+    public List<ScheduleGetResponse> findAll() {
+        List<Schedule> schedules = scheduleRepository.findAll();
         List<ScheduleGetResponse> dtos = new ArrayList<>();
         for (Schedule schedule : schedules) {
             ScheduleGetResponse dto = new ScheduleGetResponse(
@@ -71,6 +59,7 @@ public class ScheduleService {
     // 단건 일정 조회
     @Transactional(readOnly = true)
     public ScheduleGetResponse findOne(Long scheduleId) {
+        // 일정 조회 없으면 예외
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
                 () -> new IllegalStateException("존재하지 않는 일정입니다.")
         );
@@ -92,20 +81,10 @@ public class ScheduleService {
                 () -> new IllegalStateException("일정이 존재하지 않습니다.")
         );
 
-        // 비밀번호가 없을 경우
-        if (request.getPassword() == null) {
-            throw new IllegalArgumentException("비밀번호를 입력해주세요");
-        }
-
-        // 비밀번호가 존재할 경우
-        if (request.getPassword().equals(schedule.getPassword())) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다");
-        }
-
-        // 수정 가능한 필드만 변경
-        schedule.updateTitleAndUsername (
+        schedule.update(
                 request.getUsername(),
-                request.getTitle()
+                request.getTitle(),
+                request.getText()
         );
 
         return new ScheduleUpdateResponse(
@@ -120,18 +99,13 @@ public class ScheduleService {
 
     // 일정 삭제
     @Transactional
-    public void delete(Long scheduleId, String password) {
-        // 일정이 존재하지 않을 때
-        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
-                () -> new IllegalStateException("일정이 존재하지 않습니다.")
-        );
-
-        // 비밀번호 검증
-        if (!schedule.getPassword().equals(password)) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다. 다시 입력해주세요");
+    public void delete(Long scheduleId) {
+        boolean existence = scheduleRepository.existsById(scheduleId);
+        // 일정이 존재하지 않을 경우
+        if(!existence) {
+            throw new IllegalStateException("일정이 존재하지 않습니다.");
         }
-
-        // 일정이 존재하고, 비밀번호 검증이 통과 했을 때
+        // 일정 존재할 경우
         scheduleRepository.deleteById(scheduleId);
     }
 

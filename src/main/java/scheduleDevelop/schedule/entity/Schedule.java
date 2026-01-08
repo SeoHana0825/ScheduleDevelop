@@ -1,9 +1,10 @@
-package scheduleDevelop.entity;
+package scheduleDevelop.schedule.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import scheduleDevelop.user.entity.User;
 
 @Getter
 @Entity
@@ -17,17 +18,18 @@ public class Schedule extends BaseEntity {
     private String username;
     private String title;
     private String text;
-    private String password;
 
-    public Schedule(String username, String title, String text, String password) {
+
+    public Schedule(String username, String title, String text) {
         this.username = username;
         this.title = title;
         this.text = text;
-        this.password = password;
     }
 
-    public void updateTitleAndUsername(String username, String title) {
+    public void update(String username, String title, String text) {
         this.username = username;
         this.title = title;
+        this.text = text;
     }
+
 }

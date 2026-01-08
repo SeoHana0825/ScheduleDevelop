@@ -1,11 +1,11 @@
-package scheduleDevelop.controller;
+package scheduleDevelop.schedule.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import scheduleDevelop.dto.*;
-import scheduleDevelop.service.ScheduleService;
+import scheduleDevelop.schedule.dto.*;
+import scheduleDevelop.schedule.service.ScheduleService;
 
 import java.util.List;
 
@@ -23,12 +23,10 @@ public class ScheduleController {
         return ResponseEntity.status(HttpStatus.CREATED).body(scheduleService.save(request));
     }
 
-    // 전체 조회 - 작성자명 기준으로 목록 조회 (포함 안될수도), 수정일 기준 내림차순 정렬
+    // 전체 조회
     @GetMapping("/schedules")
-    public ResponseEntity<List<ScheduleGetResponse>> getAll (
-            @RequestParam (required = false) String username) {
-        // String username 를 넣어주고 셋트인 required =  false 목록 조회에 포함 안될수도 있음
-        return ResponseEntity.status(HttpStatus.OK).body(scheduleService.findAll(username));
+    public ResponseEntity<List<ScheduleGetResponse>> getAll() {
+        return ResponseEntity.status(HttpStatus.OK).body(scheduleService.findAll());
     }
 
     // 단건 조회 - 단건 정보 조회, 고유 식별자(ID) 사용
@@ -39,7 +37,7 @@ public class ScheduleController {
         return ResponseEntity.status(HttpStatus.OK).body(scheduleService.findOne(scheduleId));
     }
 
-    // 일정 수정 - 일정 제목/작성자명만 수정 가능, 비밀번호 전달
+    // 일정 수정
     @PutMapping("/schedules/{scheduleId}")
     public ResponseEntity<ScheduleUpdateResponse> update(
             @PathVariable Long scheduleId,
@@ -48,13 +46,12 @@ public class ScheduleController {
         return ResponseEntity.status(HttpStatus.OK).body(scheduleService.update(scheduleId, request));
     }
 
-    // 일정 삭제 - 비밀번호 전달
+    // 일정 삭제
     @DeleteMapping("/schedules/{scheduleId}")
     public void delete(
-            @PathVariable Long scheduleId,
-            @RequestBody ScheduleDeleteRequest request
+            @PathVariable Long scheduleId
     ) {
-        scheduleService.delete(scheduleId, request.getPassword());
+        scheduleService.delete(scheduleId);
     }
 
 }

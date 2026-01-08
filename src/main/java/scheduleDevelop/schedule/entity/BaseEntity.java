@@ -1,4 +1,4 @@
-package scheduleDevelop.entity;
+package scheduleDevelop.schedule.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -19,7 +19,6 @@ public abstract class BaseEntity {
     private LocalDateTime createdDate;
 
     @LastModifiedDate
-    @Column(updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private LocalDateTime updatedDate;
 }
