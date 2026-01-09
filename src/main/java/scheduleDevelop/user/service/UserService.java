@@ -46,6 +46,9 @@ public class UserService {
         if (request.getPassword() == null || request.getPassword().length() < 8) {
             throw new IllegalArgumentException("비밀번호는 8글자 이상이어야 합니다.");
         }
+        if (request.getName() == null || request.getName().length() > 5) {
+            throw new IllegalArgumentException("이름은 5글자 이내로 작성해주세요.");
+        }
 
         // 검증 후 유저 생성
         User user = new User(
@@ -108,6 +111,10 @@ public class UserService {
         // 비밀번호 검증 (null 포함)
         if (request.getPassword() == null || request.getPassword().length() < 8) {
             throw new IllegalArgumentException("비밀번호는 8글자 이상이어야 합니다.");
+        }
+
+        if (request.getName() == null || request.getName().length() > 5) {
+            throw new IllegalArgumentException("이름은 5글자 이내로 작성해주세요.");
         }
 
         // 수정 가능한 필드만 변경

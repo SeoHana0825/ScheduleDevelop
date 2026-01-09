@@ -26,6 +26,14 @@ public class ScheduleService {
         User user = userRepository.findById(request.getUserId()).orElseThrow(
                 () -> new IllegalStateException("존재하지 않은 유저입니다.")
         );
+        // 제목 예외처리 (null 포함)
+        if (request.getTitle() == null || request.getTitle().length() < 2) {
+            throw new IllegalArgumentException("제목은 2자 이상으로 작성해주세요.");
+        }
+        // 내용 예외처리
+        if (request.getText().length() > 100) {
+            throw new IllegalArgumentException("내용은 100자 이내로 작성해주세요");
+        }
 
         Schedule schedule = new Schedule(
                 user,
@@ -91,6 +99,15 @@ public class ScheduleService {
         if(!schedule.getUser().getPassword().equals(request.getPassword())) {
             throw new IllegalArgumentException("설정한 비밀번호가 일치하지 않습니다. 다시 입력해주세요");
         }
+        // 제목 예외처리 (null 포함)
+        if (request.getTitle() == null || request.getTitle().length() < 2) {
+            throw new IllegalArgumentException("제목은 2자 이상으로 작성해주세요.");
+        }
+        // 내용 예외처리
+        if (request.getText().length() > 100) {
+            throw new IllegalArgumentException("내용은 100자 이내로 작성해주세요");
+        }
+
         schedule.update(
                 //request.getUsername(),
                 request.getTitle(),
