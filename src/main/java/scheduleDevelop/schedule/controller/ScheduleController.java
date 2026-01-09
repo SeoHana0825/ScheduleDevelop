@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import scheduleDevelop.schedule.dto.*;
 import scheduleDevelop.schedule.service.ScheduleService;
+import scheduleDevelop.user.dto.SessionUser;
 
 import java.util.List;
 
@@ -18,6 +19,8 @@ public class ScheduleController {
     // 일정 생성 - 작성 유저명, 할일 제목, 할일 내용, 작성일, 수정일
     @PostMapping("/schedules")
     public ResponseEntity<ScheduleCreateResponse> create(
+            // 로그인을 해야만 일정 생성될 수 있게
+            @SessionAttribute(name = "loginUser", required = true) SessionUser sessionUser,
             @RequestBody ScheduleCreateRequest request
     ) {
         return ResponseEntity.status(HttpStatus.CREATED).body(scheduleService.save(request));

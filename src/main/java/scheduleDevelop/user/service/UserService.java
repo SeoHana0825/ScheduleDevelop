@@ -1,8 +1,10 @@
 package scheduleDevelop.user.service;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.ObjectUtils;
 import scheduleDevelop.user.dto.*;
 import scheduleDevelop.user.entity.User;
 import scheduleDevelop.user.repository.UserRepository;
@@ -16,7 +18,27 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    // 1. 유저 생성
+    // 로그인
+    @Transactional(readOnly = true)
+    public UserLoginResponse login(
+            @Valid UserLoginRequest request){
+        User user = userRepository.findByEmail(request.getEmail()).orElseThrow(
+                () -> new IllegalStateException("존재하지 않는 이메일입니다.")
+        );
+
+        // 비밀번호가 같지 않으면
+        // !ObjectUtils.nullSafeEquals : null 및 버그 방지를 위해 사용
+        if (!ObjectUtils.nullSafeEquals(user.getPassword(), request.getPassword())) {
+            throw new IllegalStateException("비밀번호가 일치하지 않습니다.");
+        }
+        // 비밀번호가 같으면
+        return new UserLoginResponse(
+                user.getId(),
+                user.getEmail()
+        );
+    }
+
+    // 1. 유저 생성 (회원가입)
     @Transactional
     public UserCreateResponse save(UserCreateRequest request) {
 
@@ -45,7 +67,7 @@ public class UserService {
     // 전체 유저 조회
     @Transactional(readOnly = true)
     public List<UserGetResponse> findAll() {
-        List<User>  users = userRepository.findAll();
+        List<User> users = userRepository.findAll();
         List<UserGetResponse> dtos = new ArrayList<>();
         for (User user : users) {
             UserGetResponse dto = new UserGetResponse(
@@ -103,15 +125,15 @@ public class UserService {
         );
     }
 
-        // 유저 삭제
-        @Transactional
-        public void delete(Long userId) {
-            boolean existence = userRepository.existsById(userId);
-            if (!existence) {
-                throw new IllegalArgumentException("유저가 존재하지 않습니다");
-            }
-
-            // 유저가 존재할 경우
-            userRepository.deleteById(userId);
+    // 유저 삭제
+    @Transactional
+    public void delete(Long userId) {
+        boolean existence = userRepository.existsById(userId);
+        if (!existence) {
+            throw new IllegalArgumentException("유저가 존재하지 않습니다");
         }
+
+        // 유저가 존재할 경우
+        userRepository.deleteById(userId);
     }
+}
