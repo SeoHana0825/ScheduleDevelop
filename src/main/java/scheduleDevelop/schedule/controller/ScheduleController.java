@@ -49,9 +49,10 @@ public class ScheduleController {
     // 일정 삭제
     @DeleteMapping("/schedules/{scheduleId}")
     public void delete(
-            @PathVariable Long scheduleId
+            @PathVariable Long scheduleId,
+            @RequestBody ScheduleDeleteRequest request
     ) {
-        scheduleService.delete(scheduleId);
+        scheduleService.delete(scheduleId, request.getPassword());
     }
 
 }
