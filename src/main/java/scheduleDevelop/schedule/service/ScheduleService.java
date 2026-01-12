@@ -3,6 +3,7 @@ package scheduleDevelop.schedule.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import scheduleDevelop.schedule.confige.PasswordEncoder;
 import scheduleDevelop.schedule.dto.*;
 import scheduleDevelop.schedule.entity.Schedule;
 import scheduleDevelop.schedule.repository.ScheduleRepository;
@@ -18,6 +19,7 @@ public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     // 1. 일정 생성
     @Transactional
@@ -96,7 +98,7 @@ public class ScheduleService {
                 () -> new IllegalStateException("일정이 존재하지 않습니다.")
         );
         // User가 설정한 비밀번호 검증
-        if(!schedule.getUser().getPassword().equals(request.getPassword())) {
+        if(!passwordEncoder.matches(request.getPassword(), schedule.getUser().getPassword())) {
             throw new IllegalArgumentException("설정한 비밀번호가 일치하지 않습니다. 다시 입력해주세요");
         }
         // 제목 예외처리 (null 포함)
@@ -133,10 +135,9 @@ public class ScheduleService {
         );
 
         // User가 설정한 비밀번호 검증
-        if(!schedule.getUser().getPassword().equals(password)) {
+        if(!passwordEncoder.matches(password, schedule.getUser().getPassword())) {
             throw new IllegalArgumentException("설정한 비밀번호가 일치하지 않습니다. 다시 입력해주세요");
         }
-
         // 일정 존재할 경우
         scheduleRepository.deleteById(scheduleId);
     }

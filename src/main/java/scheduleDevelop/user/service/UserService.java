@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
+import scheduleDevelop.schedule.confige.PasswordEncoder;
 import scheduleDevelop.user.dto.*;
 import scheduleDevelop.user.entity.User;
 import scheduleDevelop.user.repository.UserRepository;
@@ -17,6 +18,7 @@ import java.util.List;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     // 로그인
     @Transactional(readOnly = true)
@@ -28,9 +30,10 @@ public class UserService {
 
         // 비밀번호가 같지 않으면
         // !ObjectUtils.nullSafeEquals : null 및 버그 방지를 위해 사용
-        if (!ObjectUtils.nullSafeEquals(user.getPassword(), request.getPassword())) {
+        if (passwordEncoder.matches(user.getPassword(), request.getPassword())) {
             throw new IllegalStateException("비밀번호가 일치하지 않습니다.");
         }
+
         // 비밀번호가 같으면
         return new UserLoginResponse(
                 user.getId(),
@@ -38,7 +41,7 @@ public class UserService {
         );
     }
 
-    // 1. 유저 생성 (회원가입)
+    // 유저 생성 (회원가입)
     @Transactional
     public UserCreateResponse save(UserCreateRequest request) {
 
@@ -54,7 +57,7 @@ public class UserService {
         User user = new User(
                 request.getName(),
                 request.getEmail(),
-                request.getPassword()
+                passwordEncoder.encode(request.getPassword())
         );
 
         User savedUser = userRepository.save(user);
@@ -121,13 +124,13 @@ public class UserService {
         user.update(
                 request.getName(),
                 request.getEmail(),
-                request.getPassword()
+                passwordEncoder.encode(request.getPassword())
         );
 
         return new UserUpdateResponse(
                 user.getName(),
                 user.getEmail(),
-                user.getPassword(),
+                passwordEncoder.encode(request.getPassword()),
                 user.getUpdatedDate()
         );
     }

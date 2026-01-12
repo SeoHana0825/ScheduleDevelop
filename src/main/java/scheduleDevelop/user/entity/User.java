@@ -18,16 +18,16 @@ public class User extends BaseEntity {
     private String email;
     private String password;
 
-    public User(String name, String email, String password) {
+    public User(String name, String email, String encoderPassword) {
         this.name = name;
         this.email = email;
-        this.password = password;
+        this.password = encoderPassword;
     }
 
-    public void update(String name, String email, String password) {
+    public void update(String name, String email, String encoderPassword) {
         this.name = name;
         this.email = email;
-        this.password = password;
+        this.password = encoderPassword;
     }
 
 }
