@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 public class ScheduleCreateResponse {
 
     private final Long id;
+    private final String userName;
     private final String title;
     private final String content;
     private final LocalDateTime createdAt;
@@ -15,12 +16,14 @@ public class ScheduleCreateResponse {
 
     public ScheduleCreateResponse(
             Long id,
+            String userName,
             String title,
             String content,
             LocalDateTime createdAt,
             LocalDateTime updatedAt
     ) {
         this.id = id;
+        this.userName = userName;
         this.title = title;
         this.content = content;
         this.createdAt = createdAt;

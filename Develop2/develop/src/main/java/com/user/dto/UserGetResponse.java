@@ -1,31 +1,28 @@
-package com.schedule.dto;
+package com.user.dto;
 
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 
 @Getter
-public class ScheduleGetResponse {
+public class UserGetResponse {
 
     private final Long id;
-    private final String userName;
-    private final String title;
-    private final String content;
+    private final String name;
+    private final String email;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
 
-    public ScheduleGetResponse(
+    public UserGetResponse(
             Long id,
-            String userName,
-            String title,
-            String content,
+            String name,
+            String email,
             LocalDateTime createdAt,
             LocalDateTime updatedAt
     ) {
         this.id = id;
-        this.userName = userName;
-        this.title = title;
-        this.content = content;
+        this.name = name;
+        this.email = email;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
