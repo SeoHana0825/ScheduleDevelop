@@ -17,9 +17,15 @@ public class User extends baseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false, length = 50)
     private String name;
-    @Column(unique = true)
+
+    // unique 는 중복 저장 x
+    @Column(nullable = false, unique = true, length = 100)
     private String email;
+
+    @Column(nullable = false, unique = true, length = 50)
     private String password;
 
     public User(String name, String email, String password) {

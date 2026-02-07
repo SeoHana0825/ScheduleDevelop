@@ -65,18 +65,17 @@ public class UserController {
 
     @PutMapping
     public ResponseEntity<UserUpdateResponse> update(
-            @Valid
-            @SessionAttribute(name = "loginUser", required = false) SessionUser sessionUser
-            @RequestBody UserUpdateRequest request
+            @SessionAttribute(name = "loginUser", required = false) SessionUser sessionUser,
+            @Valid @RequestBody UserUpdateRequest request
     ) {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.update(SessionUser, request));
+        return ResponseEntity.status(HttpStatus.OK).body(userService.update(sessionUser, request));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping
     public void delete(
-            @PathVariable Long id
-            @RequestBody UserDeleteRequest request
+            @SessionAttribute(name = "loginUser", required = false ) SessionUser sessionUser,
+            @Valid @RequestBody UserDeleteRequest request
     ) {
-        userService.delete(id, request);
+        userService.delete(sessionUser, request);
     }
 }

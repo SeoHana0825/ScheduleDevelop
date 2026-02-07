@@ -10,15 +10,15 @@ public class UserUpdateResponse {
     private final Long id;
     private final String name;
     private final String email;
-    private final String createdAt;
-    private final String updatedAt;
+    private final LocalDateTime createdAt;
+    private final LocalDateTime updatedAt;
 
     public UserUpdateResponse(
             Long id,
             String name,
             String email,
-            String createdAt,
-            String updatedAt
+            LocalDateTime createdAt,
+            LocalDateTime updatedAt
     ) {
         this.id = id;
         this.name = name;

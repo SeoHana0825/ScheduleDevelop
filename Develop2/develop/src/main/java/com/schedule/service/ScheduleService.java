@@ -3,6 +3,8 @@ package com.schedule.service;
 import com.schedule.dto.*;
 import com.schedule.entity.Schedule;
 import com.schedule.repository.ScheduleRepository;
+import com.user.repository.UserRepository;
+import com.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ScheduleService {
 
+    private final UserRepository userRepository;
     private final ScheduleRepository scheduleRepository;
 
     @Transactional
